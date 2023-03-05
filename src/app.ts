@@ -1,4 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express'
+import { MysqlContext } from '../database/mysql.context';
 const app = express()
 
 require("dotenv").config();
@@ -32,8 +33,11 @@ app.use(parser.default());
 import client from "./routes/client";
 app.get('/', client)
 
-const PORT = process.env.PORT || 3333 
+const PORT = process.env.PORT 
 
-app.listen(PORT, () => {
-    server(`Servidor aberto e operando na porta ${PORT}: http://localhost:${PORT}`);
+MysqlContext.initialize().then(() => {
+    database("Conexão com MySQL estabelecida com sucesso na porta 3306")
+    app.listen(PORT, () => {
+        server(`Servidor aberto e operando na porta ${PORT}: http://localhost:${PORT}`);
+    })
 })
