@@ -16,6 +16,6 @@ export class Product {
     @Column({ type: 'varchar' })
     image_url: string | undefined
 
-    @Column('decimal')
+    @Column({ type: 'decimal', precision: 12, scale: 2 })
     price: number | undefined
 }

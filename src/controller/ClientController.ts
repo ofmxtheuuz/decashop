@@ -1,5 +1,7 @@
 import { Request, Response } from "express"
+import { ProductService } from "../services/ProductService"
 
-export function Index(req: Request, res: Response) {
-    res.render("client/index", { title: "Início" })
+const _ps: ProductService = new ProductService()
+export async function Index(req: Request, res: Response) {
+    res.render("client/index", { products: await _ps.find(), title: "Início" })
 }
