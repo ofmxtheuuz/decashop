@@ -1,0 +1,6 @@
+FROM mysql:5.7
+
+ENV MYSQL_ROOT_PASSWORD=mxtz2023
+ENV MYSQL_DATABASE=decashop
+
+COPY ./db.sql /docker-entrypoint-initdb.d/
