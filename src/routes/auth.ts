@@ -9,4 +9,6 @@ router.post("/auth/login", passport.authenticate('local', { successRedirect: '/'
 router.get("/register", controller.Register)
 router.post("/auth/register", controller.RegisterService)
 
+router.get("/logout", controller.Logout)
+
 export default router;

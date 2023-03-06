@@ -1,4 +1,4 @@
-import { Request, Response } from "express"
+import { NextFunction, Request, Response } from "express"
 import { AuthService } from "../services/AuthService";
 
 const _as = new AuthService();
@@ -16,4 +16,13 @@ export async function RegisterService(req: Request, res: Response) {
   if(await _as.CreateUser({name, username, email}, password)) {
     return res.redirect("/login")
   }
+}
+
+export async function Logout(req: Request, res: Response, next: NextFunction) {
+  if(req.user) {
+    req.logout(function(err) {
+      if (err) { return next(err); }
+    });
+  }
+  res.redirect('/');
 }
