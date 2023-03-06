@@ -31,7 +31,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(parser.default());
 
 import client from "./routes/client";
-app.get('/', client)
+app.use('/', client)
+
+import auth from "./routes/auth";
+app.use('/', auth)
+
 
 const PORT = process.env.PORT 
 
