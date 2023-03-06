@@ -13,7 +13,6 @@ export async function Register(req: Request, res: Response) {
 }
 export async function RegisterService(req: Request, res: Response) {
   const { name, username, email, password } = req.body;
-  console.log(req.body)
   if(await _as.CreateUser({name, username, email}, password)) {
     return res.redirect("/login")
   }

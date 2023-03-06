@@ -18,27 +18,37 @@ export class AuthService {
   }
 
   async CreateUser(ifs: CreateUser, password: string): Promise<Boolean> {
-    console.log(ifs)
     const hash = bcrypt.hashSync(password, SALT_ROUNDS)
     let user = new User()
     user.name = ifs.name
     user.username = ifs.username
     user.email = ifs.email
     user.password = hash
-    console.log(user)
     await this._r.save(user)
     return true;
   }
 
-  async findById(id: number): Promise<User | null> {
+  async authenticate(password: string, user_password: string) {
+    if(bcrypt.compareSync(password, user_password)) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  async findById(id: number) {
     return await this._r.findOne({where:{id}})
   }
 
-  async findByEmail(email: string): Promise<User | null> {
+  async findByEmail(email: string) {
     return await this._r.findOne({where:{email}})
   }
 
-  async findByName(name: string): Promise<User | null> {
+  async findByName(name: string) {
     return await this._r.findOne({where:{name}})
+  }
+
+  async findByUsername(username: string) {
+    return await this._r.findOne({where:{username}})
   }
 }
