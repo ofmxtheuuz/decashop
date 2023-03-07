@@ -11,6 +11,15 @@ async function isAuthenticated(req: Request): Promise<boolean> {
   }
 } 
 
+export async function Index(req: Request, res: Response) {
+  if(!(await isAuthenticated(req))) return res.redirect("/login")
+  if(req.user == null) return res.redirect('/login') 
+  const user: any = req.user;
+  const user_id = user.id;
+  const cart = await _cs.getCartByUserId(user_id)
+  res.render("cart/index", { user, cart })
+}
+
 export async function addItem(req: Request, res: Response) {
   if(!(await isAuthenticated(req))) return res.redirect("/login")
   if(req.user == null) return res.redirect('/login') 
@@ -19,5 +28,33 @@ export async function addItem(req: Request, res: Response) {
   const product_id = req.params.id
   _cs.addToCart(user_id, product_id)
   res.redirect("/")
+}
+
+
+export async function AddQuantity(req: Request, res: Response) {
+  const user: any = req.user;
+  if(user.id == null) res.redirect("/")
+  const user_id = user.id;
+  await _cs.addQuantity(user_id, req.params.id)
+
+  res.redirect("/carrinho/finalizar")
+}
+
+export async function RmQuantity(req: Request, res: Response) {
+  const user: any = req.user;
+  if(user.id == null) res.redirect("/")
+  const user_id = user.id;
+  await _cs.removeQuantity(user_id, req.params.id)
+
+  res.redirect("/carrinho/finalizar")
+}
+
+export async function RemoveItem(req: Request, res: Response) {
+  const user: any = req.user;
+  if(user.id == null) res.redirect("/")
+  const user_id = user.id;
+  await _cs.removeFromCart(user_id, req.params.id)
+
+  res.redirect("/carrinho/finalizar")
 }
 

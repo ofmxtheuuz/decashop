@@ -1,0 +1,21 @@
+<h1 class="mb-4">Meu carrinho</h1>
+{{#if cart.items}}
+  {{#each cart.items}}
+    <div class="card mb-2">
+      <div class="card-body p-3">
+        <h2>{{product.name}}</h2>
+        <h4>Quantidade: {{quantity}}</h4>
+        <h4>Preço: R${{total}} (R${{product.price}} unitário)</h4>
+        <a href="/carrinho/adicionar/quantidade/{{product.id}}" class="btn btn-primary">+</a>
+        <a href="/carrinho/remover/quantidade/{{product.id}}" class="btn btn-danger">-</a>
+        <a href="/carrinho/remover/{{product.id}}" class="btn btn-warning">Remover do carrinho</a>
+      </div>
+    </div>
+  {{/each}}
+  <a href="/checkout" class="btn btn-success">Finalizar carrinho</a>
+{{else}}
+    <h1>
+      Seu carrinho está vazio,
+      <a href="/">que tal fazer algumas compras?</a>
+    </h1>
+{{/if}}

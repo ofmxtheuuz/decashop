@@ -1,25 +1,30 @@
-
 <h1 class="mb-4">Todos os produtos</h1>
-
 <div class="d-flex" style="max-width: 1900px; flex-wrap:wrap">
-  {{#each products}}
-  <div class="card mx-5 my-3 text-center w-25" >
-    <div class="card-body">
-      <h4 class="text-center">
-        {{name}}
-      </h4>
-      <h5 class="mt-2">R${{price}}</h5>
-      <p class="my-2 text-center">
-        {{description}}
-      </p>
-      <img class="text-center" src="{{image_url}}" alt="{{name}}" width="200">
-      <br>
-      <a href="/carrinho/adicionar/{{id}}">
-        <button class="btn btn-success">
-          Adicionar ao carrinho
-        </button>
-      </a>
-    </div>
-  </div>
-  {{/each}}
+    {{#each products}}
+        <div class="card mx-5 my-3 text-center w-25">
+            <div class="card-body p-3">
+                <h4 class="text-center">
+                    {{name}}
+                </h4>
+                <h5 class="mt-2">R${{price}}</h5>
+                <p class="my-2 text-center">
+                    {{description}}
+                </p>
+                <img
+                        class="text-center"
+                        src="{{image_url}}"
+                        alt="{{name}}"
+                        width="200"
+                />
+
+                <br>
+
+                {{#if (contains ../carrinho name)}}
+                    <a href="/carrinho/remover/{{id}}" class="btn btn-danger">Remover do carrinho</a>
+                {{else}}
+                    <a href="/carrinho/adicionar/{{id}}" class="btn btn-success">Adicionar ao carrinho</a>
+                {{/if}}
+            </div>
+        </div>
+    {{/each}}
 </div>
