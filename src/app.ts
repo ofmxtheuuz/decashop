@@ -40,6 +40,8 @@ import client from "./routes/client";
 app.use('/', client)
 import auth from "./routes/auth";
 app.use('/', auth)
+import cart from "./routes/cart"
+app.use('/carrinho', cart)
 
 const PORT = process.env.PORT 
 MysqlContext.initialize().then(() => {

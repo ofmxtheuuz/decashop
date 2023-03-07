@@ -12,7 +12,7 @@ export class ProductService {
     return await this._r.find()
   }
 
-  async findById(id: number): Promise<Product | null> {
+  async findById(id: string): Promise<Product | null> {
     return await this._r.findOne({ where: { id } })
   }
 }

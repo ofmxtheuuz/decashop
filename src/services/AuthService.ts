@@ -36,7 +36,7 @@ export class AuthService {
     }
   }
 
-  async findById(id: number) {
+  async findById(id: string) {
     return await this._r.findOne({where:{id}})
   }
 

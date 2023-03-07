@@ -2,6 +2,7 @@ import "reflect-metadata"
 import { DataSource } from "typeorm";
 import { Product } from "./models/Product";
 import { User } from "./models/User";
+import { CartItem } from "./models/CartItem";
 
 export const MysqlContext = new DataSource({
   type: "mysql",
@@ -12,7 +13,7 @@ export const MysqlContext = new DataSource({
   database: process.env.DB_DB || "decashop",
   synchronize: true,
   logging: false,
-  entities: [Product, User],
+  entities: [Product, User, CartItem],
   subscribers: [],
   migrations: [],
 })

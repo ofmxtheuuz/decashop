@@ -1,5 +1,6 @@
 import "reflect-metadata"
-import { Entity, Column, PrimaryGeneratedColumn } from "typeorm"
+import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from "typeorm"
+import { v4 as uuidv4 } from "uuid";
 
 enum Roles {
     ADMIN = "admin",
@@ -8,8 +9,8 @@ enum Roles {
 
 @Entity("Users")
 export class User {
-    @PrimaryGeneratedColumn()
-    id: number | undefined
+    @PrimaryGeneratedColumn("uuid")
+    id: string | undefined
 
     @Column({ type: 'varchar' })
     name: string | undefined
@@ -29,4 +30,9 @@ export class User {
         default: Roles.USER,
     })
     role: string | undefined;
+
+    @BeforeInsert()
+    generateId() {
+      this.id = uuidv4();
+    }
 }
