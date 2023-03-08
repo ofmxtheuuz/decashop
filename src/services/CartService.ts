@@ -42,6 +42,18 @@ export class CartService {
     return rtrn
   }
 
+  async getTotal(user_id: string): Promise<number> {
+    const cartitems = await this.getCartByUserId(user_id)
+    let cart_total = 0;
+    for(const item of cartitems.items) {
+      if(item.product != null) {
+        if(item != null && item.quantity != null && item.product.price != null) {
+          cart_total += item.quantity * item.product.price
+        }
+      }
+    }
+    return cart_total
+  }
 
   async getItens(user_id: string): Promise<(string | undefined)[]> {
     let products = []
@@ -107,5 +119,4 @@ export class CartService {
       }
     }
   }
-
 }

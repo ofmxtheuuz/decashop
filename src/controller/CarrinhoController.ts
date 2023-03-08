@@ -17,7 +17,8 @@ export async function Index(req: Request, res: Response) {
   const user: any = req.user;
   const user_id = user.id;
   const cart = await _cs.getCartByUserId(user_id)
-  res.render("cart/index", { user, cart })
+
+  res.render("cart/index", { user, cart, total: await _cs.getTotal(user_id) })
 }
 
 export async function addItem(req: Request, res: Response) {
@@ -32,6 +33,8 @@ export async function addItem(req: Request, res: Response) {
 
 
 export async function AddQuantity(req: Request, res: Response) {
+  if(!(await isAuthenticated(req))) return res.redirect("/login")
+  if(req.user == null) return res.redirect('/login')
   const user: any = req.user;
   if(user.id == null) res.redirect("/")
   const user_id = user.id;
@@ -41,6 +44,8 @@ export async function AddQuantity(req: Request, res: Response) {
 }
 
 export async function RmQuantity(req: Request, res: Response) {
+  if(!(await isAuthenticated(req))) return res.redirect("/login")
+  if(req.user == null) return res.redirect('/login')
   const user: any = req.user;
   if(user.id == null) res.redirect("/")
   const user_id = user.id;
@@ -50,6 +55,8 @@ export async function RmQuantity(req: Request, res: Response) {
 }
 
 export async function RemoveItem(req: Request, res: Response) {
+  if(!(await isAuthenticated(req))) return res.redirect("/login")
+  if(req.user == null) return res.redirect('/login')
   const user: any = req.user;
   if(user.id == null) res.redirect("/")
   const user_id = user.id;
