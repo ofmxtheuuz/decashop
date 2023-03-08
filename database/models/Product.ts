@@ -1,7 +1,7 @@
 import "reflect-metadata"
 import { v4 as uuidv4 } from "uuid";
 
-import { Entity, Column, PrimaryGeneratedColumn, BeforeInsert } from "typeorm"
+import {Entity, Column, PrimaryGeneratedColumn, BeforeInsert, CreateDateColumn} from "typeorm"
 
 @Entity("Products")
 export class Product {
@@ -19,6 +19,8 @@ export class Product {
 
     @Column({ type: 'decimal', precision: 12, scale: 2 })
     price: number | undefined
+
+
 
     @BeforeInsert()
     generateId() {

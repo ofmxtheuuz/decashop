@@ -35,5 +35,9 @@ export async function Checkout(req: Request, res: Response) {
     const cart = await _cs.getCartByUserId(user_id)
     const total = await _cs.getTotal(user_id)
     
-    res.render("client/checkout", {user, cart, total})
+    res.render("client/checkout", {user, cart, total, title: "Checkout"})
+}
+
+export async function CheckoutService(req: Request, res: Response) {
+    const {nome, sobrenome, telefone, cpf, pais, estado, cidade, bairro, cep, rua} = req.body;
 }

@@ -18,7 +18,7 @@ export async function Index(req: Request, res: Response) {
   const user_id = user.id;
   const cart = await _cs.getCartByUserId(user_id)
 
-  res.render("cart/index", { user, cart, total: await _cs.getTotal(user_id) })
+  res.render("cart/index", { user, cart, total: await _cs.getTotal(user_id), title: "Carrinho" })
 }
 
 export async function addItem(req: Request, res: Response) {

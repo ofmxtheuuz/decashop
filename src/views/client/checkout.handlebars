@@ -1,0 +1,118 @@
+﻿<div class="container py-5">
+    <h1 class="mb-4">Checkout</h1>
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">Imagem</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Quantidade</th>
+                    <th scope="col">Valor Unitário</th>
+                    <th scope="col">Valor Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                {{#each cart.items}}
+                    <tr>
+                        <td><img src="{{product.image_url}}" alt="{{product.name}}" width="80"></td>
+                        <td>{{product.name}}</td>
+                        <td>{{quantity}}</td>
+                        <td>R$ {{product.price}}</td>
+                        <td>R$ {{total}}</td>
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <h2 class="mb-3">Informações de Entrega</h2>
+            <form method="post" action="/checkout">
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="inputNome" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="inputNome" name="nome" required>
+                    </div>
+                    <div class="col">
+                        <label for="inputSobrenome" class="form-label">Sobrenome</label>
+                        <input type="text" class="form-control" name="sobrenome" id="inputSobrenome" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <label for="inputTelefone" class="form-label">Telefone</label>
+                        <input type="tel" class="form-control" name="telefone" id="inputTelefone" required>
+                    </div>
+                    <div class="col">
+                        <label for="inputCpf" class="form-label">CPF</label>
+                        <input type="text" class="form-control" name="cpf" id="inputCpf" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="inputPais" class="form-label">País</label>
+                        <select class="form-select" id="inputPais" name="pais" required>
+                            <option value="">Selecione o país</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputEstado" class="form-label">Estado</label>
+                        <input type="text" class="form-control" name="estado" id="inputEstado" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="inputCidade" class="form-label">Cidade</label>
+                        <input type="text" class="form-control" name="cidade" id="inputCidade" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputBairro" class="form-label">Bairro</label>
+                        <input type="text" class="form-control" name="bairro" id="inputBairro" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="inputCep" class="form-label">CEP</label>
+                        <input type="text" class="form-control" name="cep" id="inputCep" required>
+                    </div>
+                    <div class="col-md-8">
+                        <label for="inputRua" class="form-label">Rua (com número)</label>
+                        <input type="text" class="form-control" name="rua" id="inputRua" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Continuar para o pagamento</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    // Função para obter os dados dos países
+    async function obterDadosPaises() {
+        try {
+            const response = await fetch('https://restcountries.com/v3.1/all');
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    // Chamar a função para obter os dados dos países
+    obterDadosPaises().then(paises => {
+        // Criar um objeto com o nome e a sigla dos países
+        const paisesObj = {};
+        paises.forEach(pais => {
+            paisesObj[pais.cca2] = pais.name.common;
+        });
+
+        // Criar as opções do select dos países
+        const selectPais = document.getElementById('inputPais');
+        for (const [sigla, nome] of Object.entries(paisesObj)) {
+            const option = document.createElement('option');
+            option.value = sigla;
+            option.text = nome;
+            selectPais.appendChild(option);
+        }
+    })
+                
+</script>

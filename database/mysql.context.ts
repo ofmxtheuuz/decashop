@@ -3,6 +3,8 @@ import { DataSource } from "typeorm";
 import { Product } from "./models/Product";
 import { User } from "./models/User";
 import { CartItem } from "./models/CartItem";
+import {Orders} from "./models/Oder";
+import {Invoices} from "./models/Invoice";
 
 export const MysqlContext = new DataSource({
   type: "mysql",
@@ -13,7 +15,7 @@ export const MysqlContext = new DataSource({
   database: process.env.DB_DB || "decashop",
   synchronize: true,
   logging: false,
-  entities: [Product, User, CartItem],
+  entities: [Product, User, CartItem, Orders, Invoices],
   subscribers: [],
   migrations: [],
 })
