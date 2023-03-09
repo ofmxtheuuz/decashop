@@ -50,6 +50,6 @@ export async function CheckoutService(req: Request, res: Response) {
     const user_id = user.id;
     const email = user.email
     
-    await _payment.addInvoice({name: nome, surname: sobrenome, cpf: cpf, country: pais, state: estado, city: cidade, neighborhood: bairro, cep, street: rua, email, phone: telefone}, user_id)
-    res.redirect("/")
+    const invoice = await _payment.addInvoice({name: nome, surname: sobrenome, cpf: cpf, country: pais, state: estado, city: cidade, neighborhood: bairro, cep, street: rua, email, phone: telefone}, user_id)
+    res.redirect(await _payment.createPayment(invoice.external_reference, email, invoice.total, "Decashop produto(s)"))
 }

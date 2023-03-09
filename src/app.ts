@@ -60,6 +60,8 @@ import auth from "./routes/auth";
 app.use("/", auth);
 import cart from "./routes/cart";
 app.use("/carrinho", cart);
+import mp from "./routes/mercadopago";
+app.use("/mp", mp);
 
 const PORT = process.env.PORT;
 MysqlContext.initialize().then(() => {

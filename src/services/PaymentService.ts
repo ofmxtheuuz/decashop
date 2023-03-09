@@ -4,11 +4,13 @@ import {MysqlContext} from "../../database/mysql.context";
 import {Orders} from "../../database/models/Order";
 import {CartService} from "./CartService";
 import {Invoices} from "../../database/models/Invoice";
+import {ProductService} from "./ProductService";
+import {AuthService} from "./AuthService";
+import {User} from "../../database/models/User";
 
-const ACCESS_TOKEN = process.env.MERCADOPAGO_ACCESSTOKEN || ""
+const ACCESS_TOKEN = process.env.MERCADOPAGO_ACCESSTOKEN_TEST || ""
 const NOTIFICATION_URL = process.env.MERCADOPAGO_NOTIFICATIONURL || ""
 mercadopago.configure({
-    sandbox: true,
     access_token: ACCESS_TOKEN
 })
 
@@ -31,14 +33,25 @@ interface Userinfo {
     street: string
 }
 
+interface findPayment {
+    order: any,
+    invoice: any,
+    products: any,
+    user: any
+}
+
 export class PaymentService {
     private readonly _r: Repository<Orders>
     private readonly _r2: Repository<Invoices>
     private readonly _ct: CartService
+    private readonly _ps: ProductService;
+    private readonly _as: AuthService
     constructor() {
         this._r = MysqlContext.getRepository(Orders)
         this._r2 = MysqlContext.getRepository(Invoices)
         this._ct = new CartService()
+        this._ps = new ProductService()
+        this._as = new AuthService()
     }
     private async addOrder(user_id: string, products: any) {
         return await this._r.save({
@@ -47,22 +60,61 @@ export class PaymentService {
         })
     }
     
+    async callback(ipv4: string, payment_type: string, external_reference: string) {
+        return await this._r2.update({external_reference}, {
+            ipv4,
+            payment_type
+        })
+    }
+    
+    async findMpPayment(id: number) {
+        return mercadopago.payment.get(id)
+    }
+    
+    async UpdateStatus(external_reference: string, status: string) {
+        return await this._r2.update({external_reference}, {status})
+    } 
+    
+    async findPaymentByExternalReference(external_reference: string): Promise<findPayment>{
+        const invoice = await this._r2.findOne({where:{external_reference}})
+        const user_id = invoice?.user_id || ""
+        const user = await this._as.findById(user_id)
+        const order = await this._r.findOne({where:{id: invoice?.id}}) || undefined
+        const products_ids = order?.products || []
+        let products = []
+        
+        // add products to array
+        for(const product_id of products_ids) {
+            const product = await this._ps.findById(product_id.product)
+            products.push(product)
+        }
+        
+        return {
+            order,
+            user,
+            invoice,
+            products
+        }
+    }
+    
     async createPayment(external_reference: string, email: string, total: number, name: string) {
-        const payment_data = {
-            transaction_amount: total,
-            description: name,
-            notification_url: NOTIFICATION_URL,
+        let preference = {
+            items: [
+                {
+                    title: 'Produto(s) decashop',
+                    unit_price: total,
+                    quantity: 1,
+                }
+            ],
+            external_reference,
+            notification_url: NOTIFICATION_URL, // https://url.com/mp/notification
             back_urls: {
-              success: "https://localhost:3333/mp/cb",
-              pending: "https://localhost:3333/mp/cb", 
-              failure: "https://localhost:3333/mp/cb"
-            },
-            external_reference: external_reference,
-            payer: {
-                email: email
+                success: "http://localhost:3333/mp/cb",
+                failure: "http://localhost:3333/mp/cb",
+                pending: "http://localhost:3333/mp/cb"
             }
         };
-        const payment = await mercadopago.preferences.create(payment_data)
+        const payment = await mercadopago.preferences.create(preference)
         return payment.body.init_point
     }
     
