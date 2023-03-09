@@ -24,6 +24,9 @@ export class Invoices {
     email: string | undefined
 
     @Column({ type: 'varchar' })
+    phone: string | undefined
+
+    @Column({ type: 'varchar' })
     country: string | undefined
 
     @Column({ type: 'varchar' })
@@ -34,6 +37,9 @@ export class Invoices {
 
     @Column({ type: 'varchar' })
     neighborhood: string | undefined
+
+    @Column({ type: 'varchar' })
+    external_reference: string | undefined
 
     @Column({ type: 'varchar' })
     cep: string | undefined

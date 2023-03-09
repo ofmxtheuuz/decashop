@@ -1,6 +1,8 @@
 import { Request, Response } from "express"
 import { ProductService } from "../services/ProductService"
 import { CartService } from "../services/CartService"
+import {PaymentService} from "../services/PaymentService";
+import {AuthService} from "../services/AuthService";
 
 async function isAuthenticated(req: Request): Promise<boolean> {
     if(req.user == null) {
@@ -13,6 +15,8 @@ async function isAuthenticated(req: Request): Promise<boolean> {
 
 const _ps: ProductService = new ProductService()
 const _cs: CartService = new CartService()
+const _payment: PaymentService = new PaymentService()
+const _as: AuthService = new AuthService()
 export async function Index(req: Request, res: Response) {
     let cart = undefined;
     if(req.user != undefined){
@@ -39,5 +43,13 @@ export async function Checkout(req: Request, res: Response) {
 }
 
 export async function CheckoutService(req: Request, res: Response) {
+    if(!(await isAuthenticated(req))) return res.redirect("/login")
+    if(req.user == null) return res.redirect('/login')
     const {nome, sobrenome, telefone, cpf, pais, estado, cidade, bairro, cep, rua} = req.body;
+    const user: any = req.user;
+    const user_id = user.id;
+    const email = user.email
+    
+    await _payment.addInvoice({name: nome, surname: sobrenome, cpf: cpf, country: pais, state: estado, city: cidade, neighborhood: bairro, cep, street: rua, email, phone: telefone}, user_id)
+    res.redirect("/")
 }

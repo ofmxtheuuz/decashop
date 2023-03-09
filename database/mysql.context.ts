@@ -3,7 +3,7 @@ import { DataSource } from "typeorm";
 import { Product } from "./models/Product";
 import { User } from "./models/User";
 import { CartItem } from "./models/CartItem";
-import {Orders} from "./models/Oder";
+import {Orders} from "./models/Order";
 import {Invoices} from "./models/Invoice";
 
 export const MysqlContext = new DataSource({
