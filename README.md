@@ -30,6 +30,16 @@ docker-compose up
 
 <i>In total, there are two containers, MySQL (3306) and Application Node 19 (3333)</i>
 
+## OR
+
+If you prefer, you can run
+
+```
+make
+```
+
+to remove all containers and images (DANGER! All yours containers and images in your computer will be removed) and run the containers.
+
 ### Step 3:
 By default the application port is 3333, but you can change it in the environment variables as well.
 
