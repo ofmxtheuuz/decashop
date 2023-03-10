@@ -107,6 +107,16 @@ export class PaymentService {
             orders
         }
     }
+    
+    async getInvoicesAndOrders() {
+        const invoices = await this._r2.find()
+        const orders = await this._r.find()
+
+        return {
+            invoices,
+            orders
+        }
+    }
     async getInvoiceAndOrderByOrderId(order_id: string) {
         const invoice = await this._r2.findOne({where:{order: order_id}})
         const user_id = invoice?.user_id || ""

@@ -69,7 +69,7 @@ export async function DashboardPedido(req: Request, res: Response) {
     const user: any = req.user
     const user_id = user?.id || ""
     
-    if(result.invoice?.user_id == user_id && result.order?.user_id == user_id) {
+    if((result.invoice?.user_id == user_id && result.order?.user_id == user_id) || (user.role == "admin")) {
         return res.render("client/pedido", { user, infs: result })
     }
     return res.redirect("/login")
