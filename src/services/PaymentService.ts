@@ -14,10 +14,6 @@ mercadopago.configure({
     access_token: ACCESS_TOKEN
 })
 
-interface Product { 
-    product: string,
-    quantity: number
-}
 
 interface Userinfo {
     name: string,
@@ -38,6 +34,11 @@ interface findPayment {
     invoice: any,
     products: any,
     user: any
+}
+
+interface GetInvoicesAndOrders { 
+    invoices: Invoices[]
+    orders: Orders[]
 }
 
 export class PaymentService {
@@ -89,6 +90,37 @@ export class PaymentService {
             products.push(product)
         }
         
+        return {
+            order,
+            user,
+            invoice,
+            products
+        }
+    }
+    
+    async getInvoicesAndOrderByUserId(user_id: string): Promise<GetInvoicesAndOrders> {
+        const invoices = await this._r2.find({where:{user_id}})
+        const orders = await this._r.find({where:{user_id}})
+        
+        return {
+            invoices,
+            orders
+        }
+    }
+    async getInvoiceAndOrderByOrderId(order_id: string) {
+        const invoice = await this._r2.findOne({where:{order: order_id}})
+        const user_id = invoice?.user_id || ""
+        const user = await this._as.findById(user_id)
+        const order = await this._r.findOne({where:{id: order_id}}) || undefined
+        const products_ids = order?.products || []
+        let products = []
+
+        // add products to array
+        for(const product_id of products_ids) {
+            const product = await this._ps.findById(product_id.product)
+            products.push(product)
+        }
+
         return {
             order,
             user,

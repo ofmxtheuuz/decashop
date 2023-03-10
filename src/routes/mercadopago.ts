@@ -1,8 +1,8 @@
-﻿import express, {Request, Response, NextFunction } from "express"
+﻿import express from "express"
 import * as controller from "../controller/MercadoPagoController"
 const router = express.Router();
 
 router.get("/cb", controller.Callback)
-router.post("")
+router.post("/notification", controller.Notification)
 
 export default router;

@@ -1,0 +1,51 @@
+﻿<h1 class="mt-5">
+    Pedido {{infs.order.id}}
+</h1>
+<a href="/dashboard">Retornar</a>
+<h3>Informações do pedido</h3>
+<ul>
+    <li>
+        Pedido feito em {{formatDate infs.order.data}}
+    </li>
+    <li>
+        {{infs.order.products.length}} produto(s)
+    </li>
+    <li>
+        Total: R$ {{infs.invoice.total}}
+    </li>
+</ul>
+<h3>Informações da fatura</h3>
+<ul>
+    <li>
+        Nome: {{infs.invoice.name}} {{infs.invoice.surname}}
+    </li>
+    <li>
+        CPF: {{infs.invoice.cpf}}
+    </li>
+    <li>
+        Identificação: {{infs.invoice.email}}, {{infs.invoice.phone}}
+    </li>
+    <li>
+        Endereço: {{infs.invoice.street}} ({{infs.invoice.neighborhood}}), {{infs.invoice.city}}, {{infs.invoice.state}}. {{infs.invoice.country}}
+    </li>
+    <li>
+        Pagamento: {{infs.invoice.payment_type}}
+    </li>
+    <li>
+        Status do pagamento: {{infs.invoice.status}}
+    </li>
+    <li>
+        ID da fatura: {{infs.invoice.external_reference}}
+    </li>
+    <p>{{infs.invoice.ipv4}}</p>
+</ul>
+<h3>
+    Produtos
+</h3>
+<ul>
+    {{#each infs.products}}
+        <li>
+            {{name}}: R$ {{price}}
+        </li>
+    {{/each}}
+</ul>

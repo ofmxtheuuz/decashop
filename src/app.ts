@@ -29,7 +29,18 @@ app.engine(
               } 
           }
           return false
-      }
+      }, 
+        formatDate: function(date: string) {
+            const data = new Date(date);
+            const dia = data.getDate().toString().padStart(2, '0');
+            const mes = (data.getMonth() + 1).toString().padStart(2, '0');
+            const ano = data.getFullYear().toString();
+            const hora = data.getHours().toString().padStart(2, '0');
+            const minuto = data.getMinutes().toString().padStart(2, '0');
+            const segundo = data.getSeconds().toString().padStart(2, '0');
+            const dataFormatada = `${dia}/${mes}/${ano} ${hora}:${minuto}:${segundo}`;
+            return dataFormatada
+        }
     },
   })
 );
