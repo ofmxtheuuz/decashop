@@ -84,9 +84,10 @@ passport.use(new LocalStrategy.Strategy({usernameField: "username"}, verify));
 import client from "./routes/client";
 
 app.use("/", client);
-import auth from "./routes/auth";
 
+import auth from "./routes/auth";
 app.use("/", auth);
+
 import cart from "./routes/cart";
 
 app.use("/carrinho", cart);
@@ -97,11 +98,11 @@ import admin from "./routes/admin"
 import {AuthService} from "./services/AuthService";
 app.use("/admin", admin)
 
-const auth = new AuthService()
+const auths = new AuthService()
 
 const PORT = process.env.PORT;
-MysqlContext.initialize().then(() => {
-    await auth.createAdmin("root", "admin@mxtheuz.com.br", "root", "admin2023")
+MysqlContext.initialize().then(async () => {
+    await auths.createAdmin("root", "admin@mxtheuz.com.br", "root", "admin2023")
     server("Usuário admin padrão criado com sucesso! (root:admin2023)")
     database("Conexão com MySQL estabelecida com sucesso na porta 3306");
     app.listen(PORT, () => {
