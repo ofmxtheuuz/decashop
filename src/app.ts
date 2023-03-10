@@ -49,10 +49,13 @@ app.engine(
                 }
                 return false;
             },
-            getUser: async function (user_id: string) {
-                const auth = new AuthService()
+            getUser: async function (user_id: string, options: any) {
+                const auth =  new AuthService()
+                let name: any = ""
                 const result = await auth.findById(user_id)
-                return result?.name
+                if(result != null) {
+                    return options.fn(result.name)
+                }
             }
         },
     })
@@ -92,11 +95,14 @@ import mp from "./routes/mercadopago";
 app.use("/mp", mp);
 import admin from "./routes/admin"
 import {AuthService} from "./services/AuthService";
-
 app.use("/admin", admin)
+
+const auth = new AuthService()
 
 const PORT = process.env.PORT;
 MysqlContext.initialize().then(() => {
+    await auth.createAdmin("root", "admin@mxtheuz.com.br", "root", "admin2023")
+    server("Usuário admin padrão criado com sucesso! (root:admin2023)")
     database("Conexão com MySQL estabelecida com sucesso na porta 3306");
     app.listen(PORT, () => {
         server(

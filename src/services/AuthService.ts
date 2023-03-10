@@ -17,6 +17,17 @@ export class AuthService {
     this._r = MysqlContext.getRepository(User)
   }
 
+  async createAdmin(user: string, email: string, username: string, password: string) {
+    const hash = bcrypt.hashSync(password, SALT_ROUNDS)
+    let user = new User()
+    user.name = ifs.name
+    user.username = ifs.username
+    user.email = ifs.email
+    user.password = hash
+    user.role = "admin"
+    await this._r.save(user)
+    return true;
+  } 
   async CreateUser(ifs: CreateUser, password: string): Promise<Boolean> {
     const hash = bcrypt.hashSync(password, SALT_ROUNDS)
     let user = new User()

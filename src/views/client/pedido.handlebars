@@ -1,7 +1,12 @@
 ﻿<h1 class="mt-5">
     Pedido {{infs.order.id}}
 </h1>
-<a href="/dashboard">Retornar</a>
+
+{{#if (admin user)}}
+    <a href="/admin/dashboard">Retornar</a>
+{{else}}
+    <a href="/dashboard">Retornar</a>
+{{/if}}
 <h3>Informações do pedido</h3>
 <ul>
     <li>

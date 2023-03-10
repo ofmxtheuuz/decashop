@@ -15,4 +15,14 @@ export class ProductService {
   async findById(id: string): Promise<Product | null> {
     return await this._r.findOne({ where: { id } })
   }
+  
+  async save(name: string, description: string, imageurl: string, price: string) {
+     await this._r.save({
+      name,
+      description,
+      image_url: imageurl,
+      price: parseFloat(price)
+    })
+  }
+  
 }

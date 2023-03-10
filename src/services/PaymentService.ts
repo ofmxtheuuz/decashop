@@ -9,7 +9,7 @@ import {AuthService} from "./AuthService";
 import {User} from "../../database/models/User";
 
 const ACCESS_TOKEN = process.env.MERCADOPAGO_ACCESSTOKEN_TEST || ""
-const NOTIFICATION_URL = process.env.MERCADOPAGO_NOTIFICATIONURL || ""
+const NOTIFICATION_URL = process.env.NOTIFICATION_URL || ""
 mercadopago.configure({
     access_token: ACCESS_TOKEN
 })
@@ -148,7 +148,7 @@ export class PaymentService {
                     quantity: 1,
                 }
             ],
-            external_reference,
+            external_reference: external_reference + "/mp/notification",
             notification_url: NOTIFICATION_URL, // https://url.com/mp/notification
             back_urls: {
                 success: "http://localhost:3333/mp/cb",
