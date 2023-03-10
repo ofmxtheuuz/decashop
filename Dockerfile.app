@@ -23,4 +23,3 @@ ENV NOTIFICATION_URL=https://appurl.com
 EXPOSE 3333
 
 CMD [ "npm", "start" ]
-#
