@@ -19,7 +19,7 @@ ENV MERCADOPAGO_ACCESSTOKEN_TEST=YOUR_DEVELOPMENT_ACESSTOKEN
 ENV NOTIFICATION_URL=https://appurl.com
 ```
 
-The environment variable NOTIFICATION_URL is the URL of your application, see that this is how Mercado Pago will send payment notifications, remembering that localhost is not acceptable (this variable is not used for development, so it doesn't matter, but in production it is It is extremely important that you configure it as clearly as possible)
+The environment variable NOTIFICATION_URL is the URL of your application, see that this is how Mercado Pago will send payment notifications, remembering that localhost is not acceptable (this variable is not used for development, so it doesn't matter, but in production it's It is extremely important that you configure it as clearly as possible)
 
 ### Step 2:
 Run the containers with docker:
